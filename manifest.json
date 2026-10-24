@@ -1,0 +1,15 @@
+{
+  "name": "AI Bob",
+  "short_name": "AI Bob",
+  "description": "Your personal AI assistant",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c0d10",
+  "theme_color": "#3d4fd1",
+  "icons": [{"src": "icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any maskable"}],
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "params": {"title": "title", "text": "text", "url": "url"}
+  }
+}
