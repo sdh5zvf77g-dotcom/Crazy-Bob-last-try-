@@ -72,6 +72,9 @@ let KE='',liveCtx='',vOn=false,unl=false;
 let att=null;
 let cur=null,busy=false,ctl=null,img=null;
 const rep=(k,v)=>k=='img'?undefined:v;
+function save(){try{LS.ab_s=JSON.stringify(S)}catch(e){}
+try{LS.ab_d=JSON.stringify(D,rep)}catch(e){}
+if(typeof IDB!=='undefined'&&IDB._db){try{IDB.set('D',D).then(()=>{}).catch(()=>{})}catch(e){}}};
 navigator.storage?.persist?.();
 const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const show=id=>document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==id));
@@ -86,7 +89,16 @@ return t.replace(/\n/g,'<br>').replace(/\u0000(\d+)\u0000/g,(_,i)=>'<pre><button
 
 /* ---------- memory ---------- */
 function rel(a,q,n,f){if(a.length<=n)return a;const qw=W(q);return a.map((x,i)=>[x,[...W(f(x))].filter(w=>qw.has(w)).length*2+i/a.length]).sort((x,y)=>y[1]-x[1]).slice(0,n).map(x=>x[0])}
-function addMem(t){t=(t||'').trim();if(!t)return false;const w=W(t);if(D.mems.some(x=>x.t.toLowerCase()==t.toLowerCase()||(w.size&&[...w].filter(y=>W(x.t).has(y)).length/Math.max(1,Math.min(w.size,W(x.t).size))>.75)))return false;D.mems.push({t,ts:Date.now()});save();return true}
+const _memSet=new Set();
+function _rebuildMemSet(){_memSet.clear();D.mems.forEach(m=>_memSet.add(m.t.toLowerCase().slice(0,60)))}
+_rebuildMemSet();
+function addMem(t){t=(t||'').trim();if(!t||t.length<4)return false;
+  const key=t.toLowerCase().slice(0,60);
+  if(_memSet.has(key))return false;
+  _memSet.add(key);
+  D.mems.push({t,ts:Date.now()});
+  if(D.mems.length%20===0)save();
+  return true}
 function harvest(t){if(noLearn)return strip(t);let m;const re=/\[\[remember:\s*([\s\S]*?)\]\]/gi;while(m=re.exec(t))addMem(m[1]);return strip(t)}
 function feedback(t,c){if(noLearn)return;const m=c.m.filter(x=>!x.h),n=m.length;if(n<2||m[n-1].r!='assistant'||m[n-2].r!='user')return;const l=t.toLowerCase(),neg=/\b(wrong|incorrect|not right|that.?s not)\b/.test(l),pos=/(good job|well done|thank|great answer|perfect|100% right|that.?s correct)/.test(l);if(!neg&&!pos)return;const tp=m[n-2].c.slice(0,120);D.les.push({o:neg?'neg':'pos',t:tp,l:`When handling a problem similar to: ${tp}, the approach was reported as ${neg?'wrong; verify facts first':'helpful; reuse as a candidate, then verify'}.`});D.les=D.les.slice(-100)}
 function sysP(q,c){let s=S.sys,n=S.name.trim();
@@ -97,12 +109,7 @@ if(S.mem){const m=rel(D.mems,q,12,x=>x.t);if(m.length)s+='\n\nWhat you know abou
 const l=rel(D.les.filter(x=>x.o!='neg'),q,4,x=>x.t+' '+x.l);if(l.length)s+='\n\nLessons from past feedback (reuse, then verify):\n'+l.map(x=>'- '+x.l).join('\n');
 if(S.auto)s+='\n\nIf the user shares a lasting fact or asks you to remember something, end your reply with [[remember: short fact]] (hidden from them).'}
 s+=tierCtx(q)+(liveCtx?'\n\n'+liveCtx:'');
-  // local models: use a short, direct prompt only
-  if(S.prov==='local'){
-    const n=S.name?S.name.split(' ')[0]:'';
-    const mems=D.mems.slice(-6).map(m=>'- '+m.t).join('\n');
-    return 'You are AI Bob, a helpful assistant.'+(n?'\nUser name: '+n:'')+(mems?'\n\nWhat you know:\n'+mems:'')+'\nDate: '+new Date().toDateString()+(S.auto?'\nWhen user shares a personal fact, add [[remember: fact]] at end.':'')+'\n\nBe concise and helpful.';
-  }return s+'\n\nLIVE TOOLS: for current information output ONLY one tag and stop: [[news: topic or top]] for headlines, [[search: query]] for web/Wikipedia results, [[read: url]] for page text, [[calc: expression]] for exact arithmetic, [[run: javascript]] to run code, [[code: task]] to write JavaScript that is verified by running its own tests.\nFILES/ACTIONS (the user taps to use them, nothing is sent automatically): [[export: filename.csv | file content]] for spreadsheets and documents, [[event: title | start ISO | end ISO | location]] for a calendar event, [[email: to | subject | body]] for an email draft. You will then receive the results; answer from them and cite links. Never claim you cannot browse.'}
+  if(S.prov==='local'){const n=S.name?S.name.split(' ')[0]:'';const mems=D.mems.slice(-8).map(m=>'- '+m.t).join('\n');return 'You are AI Bob, a helpful assistant.'+(n?' User: '+n:'')+(mems?'\n\nKnown facts:\n'+mems:'')+'\nDate: '+new Date().toDateString()+(S.auto?'\nWhen user shares a personal fact, add [[remember: fact]] at end.':'')+' Be concise.';}return s+'\n\nLIVE TOOLS: for current information output ONLY one tag and stop: [[news: topic or top]] for headlines, [[search: query]] for web/Wikipedia results, [[read: url]] for page text, [[calc: expression]] for exact arithmetic, [[run: javascript]] to run code, [[code: task]] to write JavaScript that is verified by running its own tests.\nFILES/ACTIONS (the user taps to use them, nothing is sent automatically): [[export: filename.csv | file content]] for spreadsheets and documents, [[event: title | start ISO | end ISO | location]] for a calendar event, [[email: to | subject | body]] for an email draft. You will then receive the results; answer from them and cite links. Never claim you cannot browse.'}
 
 /* ---------- on-device models (WebLLM) ---------- */
 const LM=[['SmolLM2-135M-Instruct-q0f16-MLC','SmolLM2 135M · tiny, ~0.3 GB'],['SmolLM2-360M-Instruct-q4f16_1-MLC','SmolLM2 360M · ~0.4 GB'],['Qwen2.5-0.5B-Instruct-q4f16_1-MLC','Qwen2.5 0.5B · ~0.5 GB'],['Qwen3-0.6B-q4f16_1-MLC','Qwen3 0.6B · ~0.6 GB'],['Llama-3.2-1B-Instruct-q4f16_1-MLC','Llama 3.2 1B · ~0.9 GB (balanced)'],['TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC','TinyLlama 1.1B · ~0.7 GB'],['Qwen2.5-1.5B-Instruct-q4f16_1-MLC','Qwen2.5 1.5B · ~1.1 GB'],['Qwen2.5-Coder-1.5B-Instruct-q4f16_1-MLC','Qwen2.5 Coder 1.5B · ~1.1 GB (code)'],['SmolLM2-1.7B-Instruct-q4f16_1-MLC','SmolLM2 1.7B · ~1.3 GB'],['Qwen3-1.7B-q4f16_1-MLC','Qwen3 1.7B · ~1.4 GB'],['gemma-2-2b-it-q4f16_1-MLC','Gemma 2 2B · ~1.9 GB'],['Llama-3.2-3B-Instruct-q4f16_1-MLC','Llama 3.2 3B · ~2.3 GB ⚠'],['Qwen2.5-3B-Instruct-q4f16_1-MLC','Qwen2.5 3B · ~2.5 GB ⚠'],['Phi-3.5-mini-instruct-q4f16_1-MLC','Phi 3.5 mini 3.8B · ~3.7 GB ⚠'],['Qwen3-4B-q4f16_1-MLC','Qwen3 4B · ~3.4 GB ⚠ (smartest small)']];
@@ -116,28 +123,12 @@ async function loadLocal(id){if(eng&&engId==id)return eng;if(!navigator.gpu)thro
 const{CreateMLCEngine}=await import('https://esm.run/@mlc-ai/web-llm@0.2.79');eng=null;eng=await CreateMLCEngine(id,{initProgressCallback:r=>setStat(r.text)});engId=id;lstat='';return eng}
 async function dlLocal(){try{setStat('Starting download…');await loadLocal(S.model);setStat('✅ Model ready. Close settings and chat. It works offline now.')}catch(e){setStat('❌ '+e.message)}}
 /* ---------- API ---------- */
-
-/* detect repetition in stream and abort */
-function checkRep(text){
-  const words=text.split(/\s+/);
-  if(words.length<20)return false;
-  const last=words.slice(-30);
-  const counts={};let maxC=0;
-  for(const w of last){const lw=w.toLowerCase();counts[lw]=(counts[lw]||0)+1;if(counts[lw]>maxC)maxC=counts[lw]}
-  if(maxC>12)return true; // same word 12+ times in last 30 = stuck
-  // check for repeating phrase pattern
-  const tail=text.slice(-200);
-  for(let len=10;len<=60;len++){
-    const phrase=tail.slice(-len);
-    if(tail.slice(0,-len).endsWith(phrase)&&tail.slice(0,-len*2).endsWith(phrase))return true;
-  }
-  return false;
-}
+function checkRep(text){const w=text.split(/\s+/);if(w.length<20)return false;const last=w.slice(-30),c={};let mx=0;for(const x of last){c[x]=(c[x]||0)+1;if(c[x]>mx)mx=c[x]}if(mx>12)return true;const tail=text.slice(-200);for(let n=10;n<60;n++){const p=tail.slice(-n);if(tail.slice(0,-n).endsWith(p)&&tail.slice(0,-n*2).endsWith(p))return true}return false}
 
 async function* stream(msgs,sys,signal){
 if(S.prov=='local'){const e=await loadLocal(S.model),ms=[{role:'system',content:(i=>i<0?sys.slice(0,5000):sys.slice(0,2200)+'\n\n'+sys.slice(i,i+3800))(sys.indexOf('LIVE RESULTS (fresh'))},...msgs.filter(m=>m.c).slice(-8).map(m=>({role:m.r,content:m.c.slice(0,3000)}))];if(/qwen3/i.test(S.model)){const l=ms[ms.length-1];if(l.role=='user')l.content+=' /no_think'}
  const it=await e.chat.completions.create({messages:ms,stream:true,temperature:Math.max(0.5,S.temp===''?0.7:+S.temp),max_tokens:800,repetition_penalty:1.15});signal?.addEventListener('abort',()=>e.interruptGenerate());
- for await(const ch of it){const t=ch.choices[0]?.delta?.content;if(t){yield t}}return}
+ for await(const ch of it){const t=ch.choices[0]?.delta?.content;if(t)yield t}return}
 const A=S.prov=='anthropic',key=S.keys[S.prov]||'';
 if(!key&&S.prov!='custom')throw Error('Add your API key in Settings (⚙️).');
 const cv=m=>{if(!m.img)return{role:m.r,content:m.c};const b=m.img.split(',')[1];return{role:m.r,content:[{type:'text',text:m.c||'Describe this image.'},A?{type:'image',source:{type:'base64',media_type:'image/jpeg',data:b}}:{type:'image_url',image_url:{url:m.img}}]}};
@@ -202,7 +193,7 @@ async function send(text){if(busy||(!text&&!img&&!att))return;try{speechSynthesi
 feedback(text,c);c.m.push({r:'user',c:att?`[Attached file: ${att.name}]\n${att.text}\n\n`+text:text,disp:text,fn:att?att.name:'',img,hi:!!img});img=null;att=null;chip();if(c.t=='New chat')c.t=(text||'Photo').slice(0,40);c.u=Date.now();
 let a={r:'assistant',c:''};c.m.push(a);busy=true;ctl=new AbortController();resetTh();curA=a;render();
 try{try{await autoTool(text,a)}catch{}if(LP())await deep(c,a,text);else for(let rd=0;rd<4;rd++){a.c='';a.tool='';let out='';
-const sp=sysP(text,c);tr('context sent to model (memory, lessons, rules, live data)',sp);for await(const t of stream(ctx(c,a),sp,ctl.signal)){out+=t;a.c=out;upd();if(checkRep(out)){ctl.abort();a.c=out+'\n\n⚠️ Repetition detected — model got stuck. Try a shorter message or switch to a larger model.';break}}thought(out);tr('model answer',out);
+const sp=sysP(text,c);tr('context sent to model (memory, lessons, rules, live data)',sp);for await(const t of stream(ctx(c,a),sp,ctl.signal)){out+=t;a.c=out;upd();if(checkRep(out)){ctl.abort();a.c=out+'\n\n⚠️ Repetition loop detected — model got stuck. Try a larger model in Settings.';break}}thought(out);tr('model answer',out);
 const tg=out.match(/\[\[(news|search|read):\s*([^\]]*)\]\]/i);
 if(tg&&rd<3){a.tool=`${tg[1]}: ${tg[2]||'top'}`;render();const res=await tool(tg[1].toLowerCase(),tg[2]);c.m.push({r:'user',h:1,c:`[Tool result for ${tg[1]}: ${tg[2]}]\n${res}\n\nNow answer the user from this, citing links. Do not output another tool tag unless essential.`});a={r:'assistant',c:''};c.m.push(a);render();continue}
 a.c=actions(harvest(out),a);break}}
@@ -246,7 +237,7 @@ if(o&&o.app=='aibob'){o.D.chats.forEach(c=>{if(!D.chats.some(x=>x.id==c.id)){D.c
 else if(o){if(o.userName&&o.userName!='Why')S.name=o.userName;if(PERS[o.personality])S.pers=o.personality;(o.profile||'').split(/(?<=\.)\s+/).forEach(addMem);(o.rules||[]).forEach(r=>addMem(r.text||r.rule||r));
 (o.learningLedger||[]).forEach(l=>{if(l.lesson&&!D.les.some(x=>x.l==l.lesson))D.les.push({o:l.outcome=='negative'?'neg':'pos',t:l.topic||'',l:l.lesson})});
 const m=(o.messages||[]).filter(x=>x.content&&/^(user|assistant)$/.test(x.role)).map(x=>({r:x.role,c:x.content}));if(m.length&&!D.chats.some(c=>c.t=='Imported from Crazy Bob'&&c.m.length==m.length)){D.chats.push({id:'cb'+Date.now().toString(36),t:'Imported from Crazy Bob',m,u:Date.now()});n++}}
-else{let hd='';t.split('\n').forEach(l=>{l=l.trim();if(l.startsWith('##')){hd=l.toLowerCase();return}if(!l.startsWith('- ')||hd.includes('how bob should'))return;let x=l.slice(2);if(/^Name:/.test(x)){S.name=x.slice(5).trim();x="The user's name is "+S.name}addMem(x)})}
+else{let hd='',n=0;_rebuildMemSet();t.split('\n').forEach(l=>{l=l.trim();if(l.startsWith('##')){hd=l.toLowerCase();return}if(!l.startsWith('- ')||hd.includes('how bob should'))return;let x=l.slice(2);if(/^Name:/.test(x)){S.name=x.slice(5).trim();x="The user's name is "+S.name}if(addMem(x))n++});save();$('#ir').textContent='✅ Added '+n+' new memories ('+D.mems.length+' total).'}
 save();memList();fill();$('#ir').textContent='✅ Imported. '+D.mems.length+' memories, '+D.les.length+' lessons, '+n+' chats added.';e.target.value=''};
 
 /* ---------- ENGINE: reasoning loops ---------- */
@@ -603,18 +594,7 @@ const IDB={
   get(k){return new Promise((res,rej)=>{const t=this._db.transaction('kv','readonly').objectStore('kv').get(k);t.onsuccess=()=>res(t.result);t.onerror=()=>rej(t.error)})},
   set(k,v){return new Promise((res,rej)=>{const t=this._db.transaction('kv','readwrite').objectStore('kv').put(v,k);t.onsuccess=()=>res();t.onerror=()=>rej(t.error)})}
 };
-// Override save/load to use IDB for D, keep S in localStorage
-let _idbReady=false,_saveQ=null;
-const _origSave=save;
-/* ════ SINGLE SAVE — writes LS + IDB atomically ════ */
-function save(){
-  try{LS.ab_s=JSON.stringify(S)}catch(e){}
-  try{LS.ab_d=JSON.stringify(D,rep)}catch(e){}
-  if(typeof IDB!=='undefined'&&IDB._db){
-    try{IDB.set('D',D).then(()=>{}).catch(()=>{})}catch(e){}
-  }
-}
-
+let _idbReady=false;
 (async()=>{
   try{
     await IDB.open();_idbReady=true;
@@ -878,6 +858,9 @@ function backupNag(){
 
 /* patch save() to also save recovery */
 
+/* patch imp button */
+const _origExp=typeof exp!=='undefined'?exp:null;
+window.exp=function(){exportAndShare(false)};
 
 /* run checks after IDB is ready */
 const _origIDBInit=(async()=>{})();

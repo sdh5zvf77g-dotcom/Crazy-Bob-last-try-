@@ -1,0 +1,158 @@
+## AI Bob — General Knowledge Pack v1.0 (October 2026)
+## Focus: New Technologies, Scientific Thinking, AI, Future Trends
+## Import via Brain icon > Import file
+
+## ── AI & LARGE LANGUAGE MODELS ──
+
+- Large language models (LLMs) are transformer-based neural networks trained on vast text corpora using self-supervised learning; they predict the next token given context
+- GPT-4o, Claude 3.5/4, Gemini 1.5/2 and Llama 3 are the leading models as of late 2026; capability gaps between frontier and open models have narrowed significantly
+- Mixture of Experts (MoE) architecture routes inputs to specialised sub-networks; allows massive parameter counts with lower inference cost; used in Mistral, Mixtral and likely GPT-4
+- Retrieval-Augmented Generation (RAG) grounds LLM outputs in a retrieved document corpus; reduces hallucination for factual queries; used in most enterprise AI deployments
+- Constitutional AI (Anthropic) and RLHF (OpenAI) are the dominant alignment techniques; both use human or AI feedback to steer model behaviour away from harmful outputs
+- Reasoning models (o1, o3, DeepSeek-R1, QwQ) use chain-of-thought at inference time; they think for longer on hard problems at the cost of speed and tokens
+- Context windows have expanded dramatically: Claude handles 200K tokens, Gemini 1.5 Pro 1M tokens; long-context models can process entire codebases or books in one pass
+- Multimodal models (GPT-4o, Gemini, Claude) process text, images, audio and video; moving toward models that perceive the world the way humans do
+- Agents are LLMs with tool use, memory and the ability to take multi-step actions; 2025–2026 has seen the first commercially viable autonomous agents (coding, research, customer service)
+- Prompt engineering is giving way to automatic prompt optimisation and system-level orchestration; the best prompts are increasingly written by AI, not humans
+- Inference efficiency: quantisation (4-bit, 8-bit), speculative decoding, flash attention and KV-cache compression allow frontier-class models to run on consumer hardware
+- On-device AI: Apple Silicon NPU, Qualcomm Hexagon and Google Tensor chips can run 1–7B parameter models locally; privacy-preserving and offline-capable
+- The scaling hypothesis (more data + compute = smarter models) is showing diminishing returns at the frontier; synthetic data, curriculum learning and architecture innovation are the new levers
+- Model collapse: training on AI-generated data degrades quality over generations; a key risk as the internet fills with synthetic content
+- Mechanistic interpretability: research field aimed at understanding what computations happen inside neural networks; tools like activation patching and sparse autoencoders are revealing internal circuits
+- Emergent abilities: capabilities that appear suddenly at certain model scales rather than improving gradually; debated whether they are real or measurement artefacts
+
+## ── AGI AND FUTURE OF AI ──
+
+- Artificial General Intelligence (AGI) is generally defined as AI that can perform any intellectual task a human can; no consensus on whether current systems are close or still far away
+- OpenAI, DeepMind, Anthropic and xAI all have explicit AGI as their stated goal; timelines given by researchers range from 2–20 years
+- Key missing capabilities for AGI: robust causal reasoning, persistent long-term memory, embodied experience, reliable self-correction, genuine common sense
+- Autonomous AI agents running for days or weeks on complex tasks are the current frontier; still fail unpredictably on long-horizon tasks
+- Self-improving AI: systems that improve their own weights or architecture; no reliable demonstration yet outside narrow domains; considered a key milestone and risk
+- Brain-computer interfaces (Neuralink, Synchron) are advancing; first patients with implants are using them to control computers; long-term goal is high-bandwidth brain-AI fusion
+- The alignment problem: how to ensure powerful AI systems pursue goals that are beneficial to humans; remains unsolved; active research at major labs and academic institutions
+
+## ── HARDWARE AND COMPUTE ──
+
+- Nvidia H100 and B200 GPUs dominate AI training; a cluster of 100,000 H100s is now considered minimum for frontier model training; cost: $1–5 billion per run
+- TPUs (Google), Trainium (AWS) and Gaudi (Intel) are competing AI accelerators; reducing dependency on Nvidia
+- Photonic computing uses light instead of electricity for matrix multiplication; orders of magnitude more energy-efficient; early commercial chips from Lightmatter and Luminous
+- Neuromorphic chips (Intel Loihi, IBM NorthPole) mimic biological neural architecture; extremely energy-efficient for sparse workloads; not yet general-purpose
+- Quantum computing: IBM, Google and IonQ have demonstrated systems with 1,000+ qubits; quantum advantage for specific optimisation and chemistry problems has been claimed but not universally accepted; fault-tolerant quantum computers are still 5–15 years away
+- 3D chip stacking (TSMC SoIC, Samsung X-Cube) puts memory directly on top of compute, reducing the memory bottleneck that limits AI training speed
+- TSMC 2nm process begins production 2025; Intel 18A targeting 2025–2026; chip density continues to scale despite predictions of Moore's Law ending
+- Energy consumption of AI is a growing concern; training GPT-4 used ~50 GWh; data centres are now major electricity consumers; nuclear and geothermal are being pursued specifically for AI
+
+## ── PROGRAMMING AND SOFTWARE ──
+
+- AI coding assistants (GitHub Copilot, Cursor, Devin) now write a significant fraction of production code; some companies report 30–50% of commits AI-generated
+- Devin and similar autonomous coding agents can complete software engineering tasks end-to-end with minimal human input; still unreliable on large, ambiguous codebases
+- WebAssembly (WASM) allows near-native performance in browsers; enables running Python, C++ and even AI models client-side; transforming what web apps can do
+- Rust continues to grow as the language of choice for systems programming where safety and performance both matter; used in Linux kernel, Android, Windows components
+- TypeScript has largely superseded plain JavaScript for serious projects; type safety at scale is now considered essential rather than optional
+- Edge computing moves compute to CDN nodes and end-user devices; reduces latency; Cloudflare Workers, Vercel Edge Functions and Deno Deploy are leading platforms
+- Serverless and function-as-a-service continue to dominate backend architecture; cold start times are now measured in milliseconds
+- Observable (reactive) programming and signals (used in Solid.js, Angular, Vue) are replacing the React useState model as the dominant frontend pattern
+- Large-scale software is increasingly maintained by AI agents that read PRs, fix bugs and write tests autonomously; human engineers shifting to architecture and review roles
+
+## ── BIOLOGY AND BIOTECHNOLOGY ──
+
+- AlphaFold 2 and 3 (DeepMind) solved the protein-folding problem; structure prediction for virtually any protein sequence is now possible in seconds; revolutionising drug discovery
+- CRISPR-Cas9 gene editing is now in clinical use; the first approved CRISPR therapy (Casgevy, for sickle cell disease and beta-thalassemia) received FDA approval in late 2023
+- Base editing and prime editing are more precise successors to CRISPR; can change single DNA letters without cutting the double strand
+- mRNA technology (pioneered by COVID vaccines) is being applied to cancer, HIV, influenza and rare diseases; personalised mRNA cancer vaccines in Phase III trials
+- Longevity science: partial cellular reprogramming (Yamanaka factors) has reversed ageing markers in mice; human trials cautiously beginning; companies like Altos Labs and Retro Biosciences are funded to billions
+- Synthetic biology: organisms designed with entirely synthetic genomes; applications in biofuel, biodegradable materials, drug production and carbon capture
+- Organoids: miniature organs grown from stem cells in a lab; now used to model disease, test drugs and study development; brain organoids have shown rudimentary electrical activity
+- Xenotransplantation: gene-edited pig organs successfully transplanted into humans (heart, kidney); could solve organ shortage within a decade
+- Epigenetics: gene expression is controlled not just by DNA sequence but by chemical modifications (methylation, acetylation); environment and behaviour affect these marks; some are heritable
+
+## ── PHYSICS AND ENERGY ──
+
+- Nuclear fusion: NIF (US) achieved ignition (more energy out than laser energy in) in December 2022; commercial fusion power still 10–20 years away but considered more likely than before; private companies (Commonwealth Fusion, Helion) targeting 2030s
+- Small Modular Reactors (SMRs): compact fission reactors designed for factory construction and rapid deployment; Rolls-Royce, NuScale, Kairos leading; first commercial deployments expected late 2020s
+- Battery technology: solid-state batteries (Toyota, Samsung, QuantumScape) promise higher energy density and faster charging than lithium-ion; commercial EVs targeted 2027–2030
+- Sodium-ion batteries: cheaper than lithium-ion, use abundant materials; CATL began production 2023; better for stationary storage and lower-cost vehicles
+- Perovskite solar cells: efficiency records now exceed 33% in tandem with silicon; commercial production scaling; could cut solar costs further
+- Green hydrogen produced by electrolysis using renewable electricity is emerging as a long-duration energy storage and industrial feedstock; cost still high but falling rapidly
+- The electric grid is becoming bidirectional: EVs, home batteries and solar panels feed power back; virtual power plants aggregate millions of small assets
+- Dark matter and dark energy remain undetected directly; make up ~95% of the universe's energy content; no consensus on their nature despite decades of experiments
+
+## ── MATHEMATICS AND LOGIC ──
+
+- The Riemann Hypothesis, P vs NP, Navier-Stokes existence and smoothness, and the Birch and Swinnerton-Dyer conjecture remain unsolved Millennium Prize Problems worth $1M each
+- AI has begun contributing to mathematics: AlphaProof (DeepMind) solved IMO problems at gold-medal level in 2024; LLMs can verify and sometimes discover proofs
+- Proof assistants (Lean, Coq, Isabelle) allow mathematical proofs to be machine-checked; the mathlib library in Lean4 is becoming a community-maintained encyclopedia of verified mathematics
+- Category theory provides a unifying language for mathematics and computer science; concepts like functors, monads and natural transformations appear in functional programming and type theory
+- Bayesian reasoning: updating beliefs based on evidence using Bayes' theorem; the foundation of rational inference; contrasts with frequentist statistics; increasingly taught as the correct framework for uncertainty
+- Kolmogorov complexity: the length of the shortest program that produces a string; measures information content; relates to compression, randomness and the nature of intelligence
+- Gödel's incompleteness theorems: any sufficiently powerful formal system contains true statements that cannot be proved within that system; fundamental limit on what mathematics can know about itself
+
+## ── COGNITIVE SCIENCE AND THINKING ──
+
+- System 1 vs System 2 thinking (Kahneman): fast, automatic, intuitive vs slow, deliberate, effortful; AI reasoning models are beginning to implement a version of System 2
+- Cognitive biases: confirmation bias, availability heuristic, anchoring, sunk cost fallacy, Dunning-Kruger effect; understanding them improves decision-making; they affect experts as much as novices
+- The free energy principle (Karl Friston): the brain minimises surprise by building and updating a predictive model of the world; unifies perception, action and learning in one framework
+- Predictive processing: perception is active inference; the brain generates top-down predictions and only processes prediction errors from sensory input; explains hallucinations, attention and mental illness
+- Working memory is limited to roughly 4 chunks of information at once; effective thinking relies on chunking, externalising information and structured note-taking
+- Spaced repetition: memories consolidate during sleep; reviewing information at expanding intervals is the most efficient way to retain knowledge; used in Anki and similar tools
+- Metacognition: thinking about your own thinking; calibrating confidence, knowing what you don't know, identifying reasoning errors; the most important skill for good epistemic practice
+- First-principles thinking: break a problem down to its fundamental truths and reason up; avoids inherited assumptions; used by Musk at Tesla (battery cost per kWh) and SpaceX (rocket economics)
+- Inversion: instead of asking how to achieve a goal, ask what would guarantee failure, then avoid it; Charlie Munger's core mental model
+- Fermi estimation: making order-of-magnitude estimates from first principles without precise data; a key skill for reasoning under uncertainty; e.g. how many piano tuners in Chicago
+- The map is not the territory: our mental models are simplifications of reality; the danger is confusing the model for the thing it represents; applies to language, economics and science
+
+## ── SPACE AND EXPLORATION ──
+
+- SpaceX Starship: fully reusable two-stage rocket; 33 Raptor engines on Super Heavy booster; intended to carry humans to Mars; reached orbital test flights 2024; Starship V2 and beyond targeting 2026+
+- Artemis programme: NASA plan to return humans to the Moon; lunar Gateway station; use of Starship as a lunar lander; international partners (ESA, JAXA, CSA)
+- Commercial space stations: Axiom, Orbital Reef (Blue Origin), Starlab (Nanoracks) are planned successors to the ISS, which retires around 2030
+- Mars: SpaceX targets first uncrewed Starship missions to Mars in late 2026; crewed missions by early 2030s; atmospheric pressure ~1% of Earth; requires pressurised habitats and ISRU (in-situ resource utilisation)
+- Asteroid mining: near-Earth asteroids contain platinum-group metals, iron, nickel and water; Psyche mission (NASA) exploring a metallic asteroid; commercial viability is contested
+- James Webb Space Telescope: launched 2021; observing first galaxies, exoplanet atmospheres, star formation; operating at L2; has already rewritten understanding of early universe structure
+- Europa Clipper: NASA mission launched 2024; arrival 2030; study of Jupiter's moon Europa which has a subsurface ocean and is considered a top candidate for extraterrestrial life
+
+## ── MATERIALS SCIENCE ──
+
+- Graphene: single layer of carbon atoms; strongest material known, excellent conductor; commercial applications in composites, filtration and batteries; production cost still a barrier
+- 2D materials beyond graphene: MoS2, boron nitride, MXenes; each has unique electronic and optical properties; stacking different 2D materials creates entirely new behaviours (twistronics)
+- Metamaterials: engineered structures with properties not found in nature; negative refractive index enables cloaking devices and perfect lenses beyond the diffraction limit
+- High-temperature superconductors: materials that conduct electricity with zero resistance at relatively high temperatures; LK-99 (2023) was a false alarm; genuine room-temperature superconductivity remains a holy grail
+- Aerogel: lightest solid material; excellent thermal insulator; new carbon aerogels are electrically conductive; applications in insulation, aerospace and batteries
+- Self-healing materials: polymers and composites that repair cracks autonomously when damaged; used in aerospace coatings and are being developed for electronics
+
+## ── CLIMATE AND ENVIRONMENT ──
+
+- Global mean temperature has risen ~1.2°C above pre-industrial baseline; 2023 and 2024 were the hottest years on record; 1.5°C threshold likely to be breached temporarily within years
+- Carbon capture and storage (CCS): capturing CO2 from air or point sources and storing underground; Direct Air Capture (DAC) cost is falling but still $300–600 per tonne; Climeworks and Carbon Engineering leading
+- Tipping points: climate system elements that may shift irreversibly once thresholds are crossed; examples — Amazon dieback, West Antarctic ice sheet collapse, permafrost methane release
+- Ocean acidification: CO2 dissolves in seawater forming carbonic acid; pH has dropped 0.1 units (26% more acidic) since industrialisation; threatens coral reefs and shellfish
+- Rewilding: reintroducing species and restoring ecosystems to a more natural state; proven to dramatically increase biodiversity and carbon storage; Yellowstone wolf reintroduction is the textbook example
+- The circular economy replaces the take-make-dispose model with closed loops; materials are kept in use as long as possible; central to EU sustainability policy
+
+## ── ECONOMICS AND SOCIETY ──
+
+- Deglobalisation: supply chain reshoring and friend-shoring accelerated by COVID and US-China tensions; semiconductor, battery and pharmaceutical supply chains being rebuilt regionally
+- The AI productivity paradox: AI tools are everywhere but economy-wide productivity gains are not yet showing in GDP data; historically, general-purpose technologies take 10–20 years to show up
+- Universal Basic Income experiments (Finland, Kenya, California) show improvements in mental health, education and entrepreneurship; no evidence of people stopping work
+- Demographic inversion: Japan, South Korea, Italy, Germany face shrinking workforces and ageing populations; AI and robotics are the proposed solution; immigration is the political solution
+- Web3 and crypto: Bitcoin, Ethereum, and stablecoins have found niches (cross-border payments, DeFi, NFTs in gaming) but the grand vision of decentralised internet has not materialised at scale
+- Effective altruism and longtermism: philosophical movements focused on maximising positive impact; have influenced AI safety funding and global health philanthropy; also controversial regarding their assumptions
+
+## ── KEY THINKING FRAMEWORKS ──
+
+- First principles vs analogy: most reasoning is by analogy (this is like that); first principles rebuilds from verified facts; use analogy for speed, first principles when stuck
+- The scientific method: hypothesis → prediction → experiment → update; the most reliable method for learning true things about the world; requires falsifiability
+- Occam's Razor: among competing hypotheses, prefer the one with the fewest assumptions; not always correct but a good prior
+- Chesterton's Fence: do not remove a fence until you understand why it was built; understand existing systems before changing them
+- Second-order thinking: consider the consequences of consequences; most people think one step ahead; Howard Marks and Charlie Munger advocate thinking to the second and third order
+- The OODA loop (Observe, Orient, Decide, Act): decision framework from military strategy; the side that cycles through the loop faster wins; applies to startups, markets and personal decisions
+- Skin in the game (Nassim Taleb): people with personal risk exposure make better decisions; experts with no downside give worse advice; always ask what someone has to lose
+- Antifragility (Nassim Taleb): systems that gain from disorder, volatility and stress; contrast with robust (withstands stress) and fragile (breaks under stress); applies to bodies, portfolios and organisations
+- The adjacent possible (Stuart Kauffman): at any moment, the next set of innovations is limited to what can be built from existing components; explains why ideas arrive simultaneously and why timing matters
+- Network effects: a product becomes more valuable as more people use it; explains winner-take-most dynamics in tech; Metcalfe's Law states value scales with the square of users
+
+## ── TRISTAN'S LEARNING CONTEXT ──
+- Tristan Hall is interested in AI, AGI, emerging technology, and building AI-powered apps
+- Lives in Thailand; building AI tools on iPhone 15 Pro Max; interested in self-improvement and getting smarter
+- Has multiple active AI projects including model training, autonomous agents, and on-device AI
+- Wants Bob to be a knowledgeable thinking partner across all these domains
