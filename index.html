@@ -72,7 +72,6 @@ let KE='',liveCtx='',vOn=false,unl=false;
 let att=null;
 let cur=null,busy=false,ctl=null,img=null;
 const rep=(k,v)=>k=='img'?undefined:v;
-const save=()=>{}; // overridden below
 navigator.storage?.persist?.();
 const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const show=id=>document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==id));
@@ -96,8 +95,14 @@ s+='\n'+PERS[S.pers]+'\nBe kind and patient. Verify before claiming; never inven
 if(c&&c.sum)s+='\n\nEarlier in this chat (summary): '+c.sum;
 if(S.mem){const m=rel(D.mems,q,12,x=>x.t);if(m.length)s+='\n\nWhat you know about the user:\n'+m.map(x=>'- '+x.t).join('\n');
 const l=rel(D.les.filter(x=>x.o!='neg'),q,4,x=>x.t+' '+x.l);if(l.length)s+='\n\nLessons from past feedback (reuse, then verify):\n'+l.map(x=>'- '+x.l).join('\n');
-if(S.auto){if(S.prov==='local')s+='\n\nRULE: When the user mentions their name, location, pets, job, or personal facts, you MUST output [[remember: fact]] at the end of your reply. Example: if user says "I have a cat", end with [[remember: has a cat]]';else s+='\n\nIf the user shares a lasting fact or asks you to remember something, end your reply with [[remember: short fact]] (hidden from them).';}}
-s+=tierCtx(q)+(liveCtx?'\n\n'+liveCtx:'');return s+'\n\nLIVE TOOLS: for current information output ONLY one tag and stop: [[news: topic or top]] for headlines, [[search: query]] for web/Wikipedia results, [[read: url]] for page text, [[calc: expression]] for exact arithmetic, [[run: javascript]] to run code, [[code: task]] to write JavaScript that is verified by running its own tests.\nFILES/ACTIONS (the user taps to use them, nothing is sent automatically): [[export: filename.csv | file content]] for spreadsheets and documents, [[event: title | start ISO | end ISO | location]] for a calendar event, [[email: to | subject | body]] for an email draft. You will then receive the results; answer from them and cite links. Never claim you cannot browse.'}
+if(S.auto)s+='\n\nIf the user shares a lasting fact or asks you to remember something, end your reply with [[remember: short fact]] (hidden from them).'}
+s+=tierCtx(q)+(liveCtx?'\n\n'+liveCtx:'');
+  // local models: use a short, direct prompt only
+  if(S.prov==='local'){
+    const n=S.name?S.name.split(' ')[0]:'';
+    const mems=D.mems.slice(-6).map(m=>'- '+m.t).join('\n');
+    return 'You are AI Bob, a helpful assistant.'+(n?'\nUser name: '+n:'')+(mems?'\n\nWhat you know:\n'+mems:'')+'\nDate: '+new Date().toDateString()+(S.auto?'\nWhen user shares a personal fact, add [[remember: fact]] at end.':'')+'\n\nBe concise and helpful.';
+  }return s+'\n\nLIVE TOOLS: for current information output ONLY one tag and stop: [[news: topic or top]] for headlines, [[search: query]] for web/Wikipedia results, [[read: url]] for page text, [[calc: expression]] for exact arithmetic, [[run: javascript]] to run code, [[code: task]] to write JavaScript that is verified by running its own tests.\nFILES/ACTIONS (the user taps to use them, nothing is sent automatically): [[export: filename.csv | file content]] for spreadsheets and documents, [[event: title | start ISO | end ISO | location]] for a calendar event, [[email: to | subject | body]] for an email draft. You will then receive the results; answer from them and cite links. Never claim you cannot browse.'}
 
 /* ---------- on-device models (WebLLM) ---------- */
 const LM=[['SmolLM2-135M-Instruct-q0f16-MLC','SmolLM2 135M · tiny, ~0.3 GB'],['SmolLM2-360M-Instruct-q4f16_1-MLC','SmolLM2 360M · ~0.4 GB'],['Qwen2.5-0.5B-Instruct-q4f16_1-MLC','Qwen2.5 0.5B · ~0.5 GB'],['Qwen3-0.6B-q4f16_1-MLC','Qwen3 0.6B · ~0.6 GB'],['Llama-3.2-1B-Instruct-q4f16_1-MLC','Llama 3.2 1B · ~0.9 GB (balanced)'],['TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC','TinyLlama 1.1B · ~0.7 GB'],['Qwen2.5-1.5B-Instruct-q4f16_1-MLC','Qwen2.5 1.5B · ~1.1 GB'],['Qwen2.5-Coder-1.5B-Instruct-q4f16_1-MLC','Qwen2.5 Coder 1.5B · ~1.1 GB (code)'],['SmolLM2-1.7B-Instruct-q4f16_1-MLC','SmolLM2 1.7B · ~1.3 GB'],['Qwen3-1.7B-q4f16_1-MLC','Qwen3 1.7B · ~1.4 GB'],['gemma-2-2b-it-q4f16_1-MLC','Gemma 2 2B · ~1.9 GB'],['Llama-3.2-3B-Instruct-q4f16_1-MLC','Llama 3.2 3B · ~2.3 GB ⚠'],['Qwen2.5-3B-Instruct-q4f16_1-MLC','Qwen2.5 3B · ~2.5 GB ⚠'],['Phi-3.5-mini-instruct-q4f16_1-MLC','Phi 3.5 mini 3.8B · ~3.7 GB ⚠'],['Qwen3-4B-q4f16_1-MLC','Qwen3 4B · ~3.4 GB ⚠ (smartest small)']];
@@ -111,10 +116,28 @@ async function loadLocal(id){if(eng&&engId==id)return eng;if(!navigator.gpu)thro
 const{CreateMLCEngine}=await import('https://esm.run/@mlc-ai/web-llm@0.2.79');eng=null;eng=await CreateMLCEngine(id,{initProgressCallback:r=>setStat(r.text)});engId=id;lstat='';return eng}
 async function dlLocal(){try{setStat('Starting download…');await loadLocal(S.model);setStat('✅ Model ready. Close settings and chat. It works offline now.')}catch(e){setStat('❌ '+e.message)}}
 /* ---------- API ---------- */
+
+/* detect repetition in stream and abort */
+function checkRep(text){
+  const words=text.split(/\s+/);
+  if(words.length<20)return false;
+  const last=words.slice(-30);
+  const counts={};let maxC=0;
+  for(const w of last){const lw=w.toLowerCase();counts[lw]=(counts[lw]||0)+1;if(counts[lw]>maxC)maxC=counts[lw]}
+  if(maxC>12)return true; // same word 12+ times in last 30 = stuck
+  // check for repeating phrase pattern
+  const tail=text.slice(-200);
+  for(let len=10;len<=60;len++){
+    const phrase=tail.slice(-len);
+    if(tail.slice(0,-len).endsWith(phrase)&&tail.slice(0,-len*2).endsWith(phrase))return true;
+  }
+  return false;
+}
+
 async function* stream(msgs,sys,signal){
-if(S.prov=='local'){const e=await loadLocal(S.model),ms=[{role:'system',content:(()=>{const b=sys.slice(0,2200),ri=sys.indexOf('If the user'),li=sys.indexOf('LIVE RESULTS');return b+(ri>=0?'\n\n'+sys.slice(ri,ri+200):'')+(li>=0?'\n\n'+sys.slice(li,li+3000):'')})()  },...msgs.filter(m=>m.c).slice(-8).map(m=>({role:m.r,content:m.c.slice(0,3000)}))];if(/qwen3/i.test(S.model)){const l=ms[ms.length-1];if(l.role=='user')l.content+=' /no_think'}
- const it=await e.chat.completions.create({messages:ms,stream:true,temperature:S.temp===''?0.7:+S.temp,max_tokens:1024});signal?.addEventListener('abort',()=>e.interruptGenerate());
- for await(const ch of it){const t=ch.choices[0]?.delta?.content;if(t)yield t}return}
+if(S.prov=='local'){const e=await loadLocal(S.model),ms=[{role:'system',content:(i=>i<0?sys.slice(0,5000):sys.slice(0,2200)+'\n\n'+sys.slice(i,i+3800))(sys.indexOf('LIVE RESULTS (fresh'))},...msgs.filter(m=>m.c).slice(-8).map(m=>({role:m.r,content:m.c.slice(0,3000)}))];if(/qwen3/i.test(S.model)){const l=ms[ms.length-1];if(l.role=='user')l.content+=' /no_think'}
+ const it=await e.chat.completions.create({messages:ms,stream:true,temperature:Math.max(0.5,S.temp===''?0.7:+S.temp),max_tokens:800,repetition_penalty:1.15});signal?.addEventListener('abort',()=>e.interruptGenerate());
+ for await(const ch of it){const t=ch.choices[0]?.delta?.content;if(t){yield t}}return}
 const A=S.prov=='anthropic',key=S.keys[S.prov]||'';
 if(!key&&S.prov!='custom')throw Error('Add your API key in Settings (⚙️).');
 const cv=m=>{if(!m.img)return{role:m.r,content:m.c};const b=m.img.split(',')[1];return{role:m.r,content:[{type:'text',text:m.c||'Describe this image.'},A?{type:'image',source:{type:'base64',media_type:'image/jpeg',data:b}}:{type:'image_url',image_url:{url:m.img}}]}};
@@ -176,26 +199,10 @@ if(near)b.scrollTop=b.scrollHeight;$('#snd').textContent=busy?'⏹':'⬆️'}
 let raf=0;const upd=()=>{raf||(raf=requestAnimationFrame(()=>{raf=0;render()}))};
 function go(){unlock();if(busy){ctl.abort();return}const t=$('#in').value.trim();$('#in').value='';$('#in').style.height='';send(t)}
 async function send(text){if(busy||(!text&&!img&&!att))return;try{speechSynthesis.cancel();AUD.pause()}catch{}let c=chat();if(!c){newChat();c=chat()}
-
-function autoExtract(txt){
-  if(!S.auto||!S.mem||noLearn)return;
-  const rules=[
-    [/my name(?:'s| is) ([A-Z][a-zA-Z]+(?: [A-Z][a-zA-Z]+)?)/,'name is $1'],
-    [/I(?:'m| am) (?:a |an )?([\w][\w ]{2,30}?)(?:\.|,|$)/i,'is $1'],
-    [/I live (?:in|at) ([\w][\w ,]{2,35}?)(?:\.|,|$)/i,'lives in $1'],
-    [/I (?:have|own|keep) ([\w][\w ]{2,35}?)(?:\.|,|$)/i,'has $1'],
-    [/I (?:love|like|enjoy|prefer) ([\w][\w ]{2,35}?)(?:\.|,|$)/i,'likes $1'],
-    [/I work (?:as|at|for) ([\w][\w ]{2,35}?)(?:\.|,|$)/i,'works $1'],
-    [/(?:please )?remember (?:that )?(.{8,100}?)(?:\.|!|$)/i,'remember: $1'],
-  ];
-  for(const [re,tpl] of rules){const m=txt.match(re);if(m&&m[1]){const f=tpl.replace('$1',m[1].trim()).replace(/\s+/g,' ').replace(/[.,!?]+$/,'').trim();if(f.length>5)addMem(f)}}
-}
-
-autoExtract(text);
 feedback(text,c);c.m.push({r:'user',c:att?`[Attached file: ${att.name}]\n${att.text}\n\n`+text:text,disp:text,fn:att?att.name:'',img,hi:!!img});img=null;att=null;chip();if(c.t=='New chat')c.t=(text||'Photo').slice(0,40);c.u=Date.now();
 let a={r:'assistant',c:''};c.m.push(a);busy=true;ctl=new AbortController();resetTh();curA=a;render();
 try{try{await autoTool(text,a)}catch{}if(LP())await deep(c,a,text);else for(let rd=0;rd<4;rd++){a.c='';a.tool='';let out='';
-const sp=sysP(text,c);tr('context sent to model (memory, lessons, rules, live data)',sp);for await(const t of stream(ctx(c,a),sp,ctl.signal)){out+=t;a.c=out;upd()}thought(out);tr('model answer',out);
+const sp=sysP(text,c);tr('context sent to model (memory, lessons, rules, live data)',sp);for await(const t of stream(ctx(c,a),sp,ctl.signal)){out+=t;a.c=out;upd();if(checkRep(out)){ctl.abort();a.c=out+'\n\n⚠️ Repetition detected — model got stuck. Try a shorter message or switch to a larger model.';break}}thought(out);tr('model answer',out);
 const tg=out.match(/\[\[(news|search|read):\s*([^\]]*)\]\]/i);
 if(tg&&rd<3){a.tool=`${tg[1]}: ${tg[2]||'top'}`;render();const res=await tool(tg[1].toLowerCase(),tg[2]);c.m.push({r:'user',h:1,c:`[Tool result for ${tg[1]}: ${tg[2]}]\n${res}\n\nNow answer the user from this, citing links. Do not output another tool tag unless essential.`});a={r:'assistant',c:''};c.m.push(a);render();continue}
 a.c=actions(harvest(out),a);break}}
@@ -599,22 +606,23 @@ const IDB={
 // Override save/load to use IDB for D, keep S in localStorage
 let _idbReady=false,_saveQ=null;
 const _origSave=save;
-async function saveIDB(){
-  if(!_idbReady)return;
-  try{await IDB.set('D',D)}catch(e){/* fallback to LS */try{LS.ab_d=JSON.stringify(D,rep)}catch{}}
+/* ════ SINGLE SAVE — writes LS + IDB atomically ════ */
+function save(){
+  try{LS.ab_s=JSON.stringify(S)}catch(e){}
+  try{LS.ab_d=JSON.stringify(D,rep)}catch(e){}
+  if(typeof IDB!=='undefined'&&IDB._db){
+    try{IDB.set('D',D).then(()=>{}).catch(()=>{})}catch(e){}
+  }
 }
-window.save=function(){
-  LS.ab_s=JSON.stringify(S);
-  if(_idbReady)saveIDB();
-  else{try{LS.ab_d=JSON.stringify(D,rep)}catch(e){toast('Storage full — export a backup and delete old chats.')}}
-};
+
 (async()=>{
   try{
     await IDB.open();_idbReady=true;
     const stored=await IDB.get('D');
     if(stored){D.chats=stored.chats||D.chats;D.mems=stored.mems||D.mems;D.les=stored.les||D.les;D.g=stored.g||D.g;D.epi=stored.epi||D.epi;D.ds=stored.ds||D.ds;D.cur=stored.cur||D.cur;D.ev=stored.ev||D.ev;D.vs=stored.vs||D.vs;D.log=stored.log||D.log;D.tasks=stored.tasks||D.tasks;D.tests=stored.tests||D.tests}
     else if(LS.ab_d){try{const old=JSON.parse(LS.ab_d);Object.assign(D,old);await IDB.set('D',D);delete LS.ab_d;console.log('migrated to IDB')}catch{}}
-    cur=D.chats[0]?.id;if(!cur)newChat();else render();
+    try{LS.ab_d=JSON.stringify(D,rep)}catch(e){}
+cur=D.chats[0]?.id;if(!cur)newChat();else render();
     await checkRecovery();
     setTimeout(backupNag,3000);
   }catch(e){console.warn('IDB failed, using localStorage',e);_idbReady=false}
@@ -869,14 +877,7 @@ function backupNag(){
 }
 
 /* patch save() to also save recovery */
-const _savedSave=save;
-window.save=function(){
-  _savedSave();
-  saveRecovery().catch(()=>{});
-};
-/* patch imp button */
-const _origExp=typeof exp!=='undefined'?exp:null;
-window.exp=function(){exportAndShare(false)};
+
 
 /* run checks after IDB is ready */
 const _origIDBInit=(async()=>{})();

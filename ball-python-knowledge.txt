@@ -1,0 +1,129 @@
+## Ball Python Care — Knowledge Pack for AI Bob
+## Import this via the Brain icon > Import file
+
+## Basic Facts
+- Ball pythons (Python regius) are native to West and Central Africa; wild-caught imports are still common so always buy captive-bred (CB) animals
+- Adults average 3–5 ft; females grow larger than males; lifespan 20–30 years in captivity
+- Nocturnal and crepuscular; most active at dusk and dawn
+- Name comes from their defensive behaviour: curling tightly into a ball and tucking their head inside
+
+## Housing
+- Hatchlings and juveniles: 20-gallon enclosure minimum; adults: 4 ft x 2 ft x 2 ft minimum (120x60x60 cm)
+- Enclosure type: PVC, wood vivarium or glass with a secure lid; front-opening preferred as top-down approach triggers a prey response
+- Two hides required — one on the warm side, one on the cool side; snug fit is important, they need to feel all sides touching
+- Provide a humid hide (damp sphagnum moss) on the warm side to assist in shedding
+- Substrate options: coconut fibre, cypress mulch, bioactive soil mixes; avoid cedar, pine and sand
+- Minimum substrate depth 2–3 inches; deeper is better for burrowing
+- Enrichment: cork rounds, half logs, fake plants, tunnels; clutter reduces stress
+
+## Temperature and Humidity
+- Hot spot (belly heat): 88–92°F (31–33°C) — use an under-tank heater (UTH) or radiant heat panel (RHP) on a thermostat
+- Warm side ambient: 80–85°F (27–29°C)
+- Cool side ambient: 75–80°F (24–27°C)
+- Never let the enclosure drop below 72°F (22°C)
+- NEVER use heat rocks — cause serious burns
+- Thermostats are mandatory for any heat source
+- Humidity: 60–80% ambient; 80–90% during shed; use a digital hygrometer
+- To raise humidity: seal enclosure more, mist one side, use damp substrate, add a larger water bowl
+
+## Feeding
+- Prey: frozen/thawed (F/T) or live mice or rats; always offer pre-killed or F/T — live prey can injure the snake
+- Hatchlings: fuzzy or hopper mouse every 5–7 days; size should be no wider than the widest part of the snake's body
+- Juveniles (under 200g): small to medium mouse or rat fuzzy every 7 days
+- Sub-adults (200–400g): medium mouse or small rat every 7–10 days
+- Adults: medium to large rat every 10–14 days; overfeeding causes obesity
+- Thaw F/T prey fully in warm water (105–110°F); never microwave; ensure no cold spots
+- Feeding response: ball pythons are notorious for hunger strikes — especially in winter, during shed, after a move or hormonal changes; a healthy adult can fast for 6 months without harm
+- Do not handle for 48 hours after feeding
+- Remove uneaten prey after 30 minutes to reduce stress; try again in a few days
+- Use feeding tongs or a separate feeding bin to avoid associating your hands with food
+
+## Shedding (Ecdysis)
+- Healthy adults shed every 4–6 weeks; juveniles more frequently
+- Signs of impending shed: eyes turn blue/cloudy (in opaque phase), skin looks dull, loses appetite, becomes defensive
+- Provide a humid hide during pre-shed and ensure humidity is 70–80%
+- Do not handle during opaque phase; eyes clear about 3–5 days before shed
+- A complete shed in one piece is the goal; retained shed (dysecdysis) indicates humidity too low
+- To assist a stuck shed: 30-minute warm water soak, gentle removal with damp towel
+- Retained eye caps (spectacles) are a veterinary emergency if two or more sheds are retained
+
+## Health
+- Common issues: respiratory infection (RI) — wheezing, mucus, neck raised; caused by temps too low or humidity too high
+- Inclusion body disease (IBD): neurological symptoms (star-gazing); no cure, highly contagious; euthanasia recommended
+- Mites: tiny black dots moving in water bowl, on snake, in crevices; treat with ProVetLogic or veterinary reptile mite spray; remove substrate, treat enclosure
+- Cryptosporidiosis (Crypto): chronic regurgitation, weight loss; incurable; separate animals immediately
+- Mouth rot (stomatitis): swollen, cheesy discharge from mouth; requires vet antibiotics
+- Always take a new snake to a reptile vet for a faecal exam within 2 weeks of acquisition; many carry parasites
+
+## Handling
+- New snakes: do not handle for 2 weeks after arrival to allow acclimatisation
+- Short sessions: start at 10–15 minutes, build up to 30–60 minutes maximum
+- Never handle during shed, within 48 hours of feeding, or when the snake is in a defensive ball
+- Support the entire body; ball pythons should feel secure; do not dangle
+- Wash hands before and after handling; bacteria transfer both ways
+- Hissing, tight balling, and hiding head are stress signals; respect them and put the snake back
+
+## Genetics and Morphs Overview
+- All morphs arise from selective breeding of genetic mutations; base animal is the Normal (wild-type) — brown and gold saddle pattern on black
+- Genetics: mutations are either recessive, dominant, or co-dominant (incomplete dominant)
+- Recessive: animal must carry two copies to express the trait; two copies = visual; one copy = het (heterozygous); hets look normal but carry the gene; e.g. Albino, Piebald, Clown, Desert Ghost, Ultramel
+- Co-dominant (incomplete dominant): one copy shows a phenotype; two copies (super form) is a different and often more extreme phenotype; e.g. Spider, Mojave, Butter, Lesser, Phantom, Woma, Cinnamon, Black Pastel, Russo
+- Dominant: one copy expresses the trait; no super form; e.g. Pinstripe, Spider (debated), Genetic Stripe
+- Designer morph: multiple mutations combined; e.g. Bumble Bee = Spider + Pastel; Blue Eyed Leucistic (BEL) = Mojave + Russo or Butter + Russo (or other combinations)
+
+## Key Single-Gene Morphs
+- Normal: wild-type pattern; great feeders; recommended for beginners
+- Albino (Amelanistic): lack of dark pigment; yellow and white with pink/red eyes; recessive; widely bred since the 1990s
+- Piebald (Pied): variable patches of white unpatterned skin combined with normal patterned sections; recessive; pattern is random and unique per animal
+- Clown: reduced pattern with a clear dorsal stripe and distinct head pattern; recessive; excellent morph for building combos
+- Pastel: brighter yellows, washed-out pattern, lighter eyes; co-dominant; very common in collections; super pastel is more extreme
+- Spider: broken pattern with a thin dorsal stripe; co-dominant; carries the wobble (see below)
+- Mojave: reduced and brightened pattern; blue eyes in some combinations; co-dominant; super Mojave is a BEL
+- Butter/Yellow Belly/Lesser Platinum: similar complex; used to make BELs; co-dominant
+- Pinstripe: thin pinstripe dorsal line, reduced side pattern; dominant
+- Cinnamon/Black Pastel: dark, saturated colouration; co-dominant; super forms (super cinnamon, super black pastel) are all-black and often have neurological issues — avoid producing super forms
+- Woma: banded pattern, washed-out head; co-dominant; can have mild wobble
+- Russo (Highway/Russo): pale yellow with dark dorsal line and muted sides; co-dominant; super Russo is a BEL variant
+
+## Wobble Syndrome
+- Spider morph and several related morphs (Woma, Hidden Gene Woma) carry a neurological condition called the wobble — head tremors, corkscrewing, stargazing
+- Severity ranges from barely detectable to severely debilitating; stress and illness worsen it; no cure
+- Affected snakes can live long lives with good care but some struggle to feed; quality of life varies
+- Ethical debate in the hobby about continuing to breed Spider; many breeders have stopped
+- Never breed Spider to Spider; the super form is not viable
+
+## BEL Complex (Blue Eyed Leucistic)
+- White snake with blue eyes; produced by combining two co-dominant morphs from the same complex
+- Common BEL combos: Butter + Lesser, Mojave + Russo, Mojave + Butter, Lesser + Russo
+- Not the same as albino (which has red/pink eyes); BEL retains some pigment in the eyes
+- Highly sought after; widely bred
+
+## Popular Designer Morphs
+- Bumble Bee: Spider + Pastel; bright yellow with broken black pattern; carries wobble
+- Coral Glow / Banana: produces yellow and lavender tones; male Bananas often produce 50% Banana offspring regardless of pairing (sex-linked); unique co-dominant
+- Sunset: intense orange/red tones; recessive; used extensively in combos
+- Leopard: reduces the pattern to thin lines; co-dominant
+- Axanthic: reduces yellow pigment; black, white and grey; recessive; several unrelated lines (VPI, Marcus Jayne, Jolliff, etc.) that are not compatible
+- Champagne: tan/peach with minimal pattern; co-dominant; super Champagne has neurological issues — same concern as super Cinnamon
+- Scaleless: no scales on the body (retains belly scales); recessive; controversial welfare-wise — more prone to injury and infection
+
+## Breeding
+- Sexual maturity: females minimum 1500g and 3 years old; males minimum 500g and 18 months (but 2 years is safer)
+- Breeding season: October to March (Northern Hemisphere); cool down slightly (75–80°F) to trigger ovulation
+- Pairing: introduce male to female's enclosure; observe for copulation
+- Follicles and ovulation: take female to a reptile vet for ultrasound to confirm follicle development
+- Post-ovulation: female goes through a pre-lay shed; eggs are laid 30–45 days after ovulation; average clutch 4–10 eggs
+- Incubation: 55–60°C (no — 88–90°F / 31–32°C) at 99–100% relative humidity; 55–60 days
+- Hatchlings should not be fed until after their first shed (7–14 days post-hatch)
+
+## Sourcing
+- Always buy captive-bred from a reputable breeder; never wild-caught (WC) imports
+- Reputable sources: Morph Market (morphmarket.com), specialist breeders, reptile expos
+- Signs of a healthy animal: clear eyes (outside of shed), no mites, alert and responsive, no retained shed, no RI signs, feeding record provided, healthy weight
+- Avoid: animals listed as 'not feeding yet', animals kept in poor conditions, impulsive pet shop purchases
+
+## Tristan's Collection Notes
+- Tristan Hall keeps ball pythons in Thailand
+- Location affects humidity management — Thailand is naturally humid so desiccation is rarely an issue but airflow and bacterial growth need monitoring
+- Local vet access for reptiles may be limited in some Thai cities; identify a reptile-competent vet in advance
+- Local prey items (mice/rats) widely available in Thailand; ensure they are healthy feeder animals
